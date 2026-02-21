@@ -18,7 +18,7 @@
 .logo {
   font-size: 1.5rem;
   font-weight: 800;
-  color: #38bdf8;
+  color: var(--text-primary);
   text-decoration: none;
   letter-spacing: -0.05em;
 }
@@ -39,28 +39,26 @@
   font-weight: 800;
   line-height: 1.1;
   margin-bottom: 2rem;
-  background: linear-gradient(to right, #38bdf8, #818cf8);
-  -webkit-background-clip: text;
-  color: transparent;
+  color: var(--text-primary);
   max-width: 800px;
 }
 
 .ctaBtn {
   display: inline-block;
   padding: 1rem 3rem;
-  background-color: var(--btn-primary);
-  color: white;
+  background-color: var(--text-primary);
+  color: var(--bg-main);
   text-decoration: none;
   border-radius: 8px;
   font-size: 1.25rem;
   font-weight: 700;
   transition: transform 0.2s, background-color 0.2s;
-  box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39);
+  box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.1);
 }
 
 .ctaBtn:hover {
   transform: translateY(-2px);
-  background-color: var(--btn-primary-hover);
+  background-color: var(--text-secondary);
 }
 
 /* 모바일 반응형 */

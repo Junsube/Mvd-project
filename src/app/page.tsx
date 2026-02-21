@@ -1,66 +1,56 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Link from 'next/link';
+import styles from './page.module.css';
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className={styles.main}>
+      <header className={styles.header}>
+        <Link href="/" className={styles.logo}>
+          MVD Collab
+        </Link>
+        <nav className={styles.nav}>
+          <Link href="/about" className={styles.navLink}>소개</Link>
+          <Link href="/pricing" className={styles.navLink}>요금</Link>
+          <Link href="/login" className={styles.loginBtn}>로그인</Link>
+        </nav>
+      </header>
+
+      <main className={styles.hero}>
+        <h1 className={styles.title}>
+          빠르고 명확한 영상 피드백
+        </h1>
+        <p className={styles.description}>
+          프레임 단위의 정확한 리뷰, 간편한 버전 관리, 그리고 원활한 팀 협업.
+          이제 영상 제작 프로세스를 한 단계 끌어올리세요.
+        </p>
+        <Link href="/login" className={styles.ctaBtn}>
+          무료로 시작하기
+        </Link>
+      </main>
+
+      <section className={styles.features}>
+        <div className={styles.card}>
+          <div className={styles.cardIcon}>🎯</div>
+          <h3 className={styles.cardTitle}>프레임 단위 피드백</h3>
+          <p className={styles.cardDesc}>
+            영상 위에 직접 그림을 그리고 댓글을 남겨 정확한 수정 사항을 전달하세요.
           </p>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className={styles.card}>
+          <div className={styles.cardIcon}>🔄</div>
+          <h3 className={styles.cardTitle}>버전 관리</h3>
+          <p className={styles.cardDesc}>
+            이전 버전과 나란히 비교하며 변경 사항을 쉽게 확인하고 승인할 수 있습니다.
+          </p>
         </div>
-      </main>
+        <div className={styles.card}>
+          <div className={styles.cardIcon}>🔒</div>
+          <h3 className={styles.cardTitle}>강력한 보안</h3>
+          <p className={styles.cardDesc}>
+            모든 데이터는 엔터프라이즈급 보안 정책에 의해 안전하게 보호되며, 테넌트 간 완벽히 격리됩니다.
+          </p>
+        </div>
+      </section>
     </div>
   );
 }

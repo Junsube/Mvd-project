@@ -13,19 +13,19 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    color: #94a3b8;
+    color: var(--text-secondary);
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s;
 }
 
 .backLink:hover {
-    color: #fff;
+    color: var(--text-primary);
 }
 
 .errorCard {
-    background: rgba(30, 33, 43, 0.6);
-    border: 1px solid rgba(239, 68, 68, 0.2);
+    background: var(--bg-card);
+    border: 1px solid var(--error-border);
     border-radius: 12px;
     padding: 40px;
     text-align: center;
@@ -34,18 +34,18 @@
 }
 
 .errorCard h2 {
-    color: #f87171;
+    color: var(--error-text);
     margin-top: 0;
 }
 
 .errorCard p {
-    color: #cbd5e1;
+    color: var(--text-muted);
     margin-bottom: 24px;
 }
 
 .backBtn {
     display: inline-block;
-    background: #3b82f6;
+    background: var(--btn-primary);
     color: #fff;
     padding: 10px 20px;
     border-radius: 6px;
@@ -55,7 +55,7 @@
 }
 
 .backBtn:hover {
-    background: #2563eb;
+    background: var(--btn-primary-hover);
 }
 
 /* 모바일 반응형 디자인 */

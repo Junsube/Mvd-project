@@ -38,7 +38,7 @@ export async function addVideoMetadata(data: {
     return { success: true };
 }
 
-export async function createUploadUrl(fileName: string, fileType: string) {
+export async function createUploadUrl(fileName: string, fileType: string, fileSize: number) {
     const supabase = await createClient();
 
     const { data: userAuth, error: authError } = await supabase.auth.getUser();
@@ -47,7 +47,13 @@ export async function createUploadUrl(fileName: string, fileType: string) {
         return { error: '세션 정보가 없습니다. 다시 로그인해주세요.' };
     }
 
-    // --- [NEW] 9GB Hard Limit 방어 로직 ---
+    // --- [NEW] 안전 및 과금 방어 로직 (Validation & Rate Limit/Capacity) ---
+    // 1. 단일 파일 업로드 최대 크기 하드 제어 (1GB)
+    const MAX_FILE_SIZE = 1 * 1024 * 1024 * 1024;
+    if (fileSize > MAX_FILE_SIZE) {
+        return { error: '보안 정책에 따라 1GB를 초과하는 파일은 업로드할 수 없습니다.' };
+    }
+
     const { data: allVideos, error: sizeError } = await supabase
         .from('videos')
         .select('file_size');
@@ -59,8 +65,9 @@ export async function createUploadUrl(fileName: string, fileType: string) {
     const totalBytes = allVideos.reduce((acc, v) => acc + (Number(v.file_size) || 0), 0);
     const LIMIT_9GB = 9 * 1024 * 1024 * 1024;
 
-    if (totalBytes > LIMIT_9GB) {
-        return { error: '❌ 무료 저장 공간(9GB)을 모두 사용했습니다. 새 영상을 올리려면 기존 영상을 지워주세요.' };
+    // 2. 전체 계정 스토리지 과도 사용량 방어 (R2 Free Tier 과금 방지)
+    if (totalBytes + fileSize > LIMIT_9GB) {
+        return { error: '❌ 무료 저장 공간(9GB) 제한에 도달할 예정입니다. 새 영상을 올리려면 기존 영상을 지워주세요.' };
     }
     // ----------------------------------------
 

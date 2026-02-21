@@ -1,15 +1,15 @@
 .container {
     display: flex;
     min-height: 100vh;
-    background-color: #0f172a;
-    color: #f8fafc;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
     font-family: 'Inter', system-ui, sans-serif;
 }
 
 .sidebar {
     width: 250px;
-    background-color: #1e293b;
-    border-right: 1px solid #334155;
+    background-color: var(--bg-card);
+    border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
 }
@@ -19,7 +19,7 @@
     font-size: 1.25rem;
     font-weight: 800;
     color: #38bdf8;
-    border-bottom: 1px solid #334155;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .nav {
@@ -31,7 +31,7 @@
 
 .navItem {
     padding: 0.75rem 1.5rem;
-    color: #94a3b8;
+    color: var(--text-secondary);
     text-decoration: none;
     font-weight: 500;
     transition: all 0.2s;
@@ -42,21 +42,21 @@
 
 .navItem:hover,
 .navItemActive {
-    background-color: #334155;
-    color: #f8fafc;
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
 }
 
 .navItemActive {
-    border-left: 3px solid #3b82f6;
+    border-left: 3px solid var(--btn-primary);
 }
 
 .logoutBtn {
     margin-top: auto;
     padding: 1rem 1.5rem;
     background: transparent;
-    color: #ef4444;
+    color: var(--error-text);
     border: none;
-    border-top: 1px solid #334155;
+    border-top: 1px solid var(--border-color);
     text-align: left;
     font-weight: 600;
     cursor: pointer;
@@ -67,7 +67,7 @@
 }
 
 .logoutBtn:hover {
-    background-color: rgba(239, 68, 68, 0.1);
+    background-color: var(--error-bg);
 }
 
 .mainContent {
@@ -78,8 +78,8 @@
 
 .header {
     height: 64px;
-    background-color: #1e293b;
-    border-bottom: 1px solid #334155;
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -88,7 +88,7 @@
 
 .userEmail {
     font-size: 0.875rem;
-    color: #94a3b8;
+    color: var(--text-secondary);
     font-weight: 500;
 }
 
@@ -107,7 +107,7 @@
     .sidebar {
         width: 100%;
         border-right: none;
-        border-bottom: 1px solid #334155;
+        border-bottom: 1px solid var(--border-color);
     }
 
     .brand {
@@ -131,14 +131,14 @@
 
     .navItemActive {
         border-left: none;
-        border-bottom: 3px solid #3b82f6;
+        border-bottom: 3px solid var(--btn-primary);
     }
 
     .logoutBtn {
         margin-top: 0;
         border-top: none;
         padding: 0.5rem 1rem;
-        border-left: 1px solid #334155;
+        border-left: 1px solid var(--border-color);
         border-radius: 6px;
     }
 

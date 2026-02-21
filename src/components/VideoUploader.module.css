@@ -1,7 +1,7 @@
 .uploaderCard {
-    background-color: #1e293b;
+    background-color: var(--bg-card);
     border-radius: 12px;
-    border: 1px solid #334155;
+    border: 1px solid var(--border-color);
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
@@ -11,8 +11,8 @@
     font-size: 1.25rem;
     font-weight: 600;
     margin-bottom: 1.5rem;
-    color: #e2e8f0;
-    border-bottom: 1px solid #334155;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 0.75rem;
 }
 
@@ -24,22 +24,22 @@
 
 .dropZone {
     position: relative;
-    border: 2px dashed #475569;
+    border: 2px dashed var(--border-active);
     border-radius: 8px;
     padding: 2rem;
     text-align: center;
     cursor: pointer;
-    background-color: rgba(15, 23, 42, 0.5);
+    background-color: var(--bg-hover);
     transition: all 0.2s;
 }
 
 .dropZone:hover:not(.hasFile) {
-    border-color: #3b82f6;
-    background-color: rgba(15, 23, 42, 0.8);
+    border-color: var(--btn-primary);
+    background-color: var(--bg-card);
 }
 
 .dropZone.hasFile {
-    border: 2px solid #3b82f6;
+    border: 2px solid var(--btn-primary);
     background-color: rgba(59, 130, 246, 0.1);
     padding: 1.5rem;
 }
@@ -53,11 +53,11 @@
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    color: #94a3b8;
+    color: var(--text-secondary);
 }
 
 .uploadIcon {
-    color: #64748b;
+    color: var(--text-muted);
 }
 
 .dropText {
@@ -69,11 +69,11 @@
     flex-direction: column;
     align-items: center;
     gap: 0.75rem;
-    color: #e2e8f0;
+    color: var(--text-primary);
 }
 
 .fileIcon {
-    color: #3b82f6;
+    color: var(--btn-primary);
 }
 
 .fileName {
@@ -84,7 +84,7 @@
 
 .fileSize {
     font-size: 0.85rem;
-    color: #94a3b8;
+    color: var(--text-secondary);
 }
 
 .metadataFields {
@@ -103,22 +103,22 @@
 .label {
     font-size: 0.9rem;
     font-weight: 500;
-    color: #cbd5e1;
+    color: var(--text-muted);
 }
 
 .input {
     padding: 0.75rem 1rem;
     border-radius: 6px;
-    background-color: #0f172a;
-    border: 1px solid #334155;
-    color: #f8fafc;
+    background-color: var(--bg-main);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
     font-family: inherit;
     font-size: 0.95rem;
 }
 
 .input:focus {
     outline: none;
-    border-color: #3b82f6;
+    border-color: var(--btn-primary);
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
@@ -135,7 +135,7 @@
 .submitBtn {
     margin-top: 0.5rem;
     padding: 0.875rem;
-    background-color: #3b82f6;
+    background-color: var(--btn-primary);
     color: white;
     border: none;
     border-radius: 6px;
@@ -146,13 +146,13 @@
 }
 
 .submitBtn:hover:not(:disabled) {
-    background-color: #2563eb;
+    background-color: var(--btn-primary-hover);
 }
 
 .submitBtn:disabled {
-    background-color: #475569;
+    background-color: var(--border-active);
     cursor: not-allowed;
-    color: #94a3b8;
+    color: var(--text-secondary);
 }
 
 .progressContainer {
@@ -161,7 +161,7 @@
 
 .progressBarWrapper {
     height: 8px;
-    background-color: #334155;
+    background-color: var(--border-color);
     border-radius: 4px;
     overflow: hidden;
 }
@@ -177,10 +177,10 @@
     align-items: center;
     gap: 0.5rem;
     padding: 1rem;
-    background-color: rgba(239, 68, 68, 0.1);
-    border: 1px solid rgba(239, 68, 68, 0.3);
+    background-color: var(--error-bg);
+    border: 1px solid var(--error-border);
     border-radius: 6px;
-    color: #fca5a5;
+    color: var(--error-text);
     font-size: 0.9rem;
     animation: fadeIn 0.3s ease;
 }

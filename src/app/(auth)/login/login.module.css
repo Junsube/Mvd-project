@@ -3,20 +3,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #0f172a;
-  /* 다크 모드 배경색상 */
+  background-color: var(--bg-main);
+  /* 다크/라이트 모드 배경색상 전환용 */
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  color: #f8fafc;
+  color: var(--text-primary);
 }
 
 .box {
   width: 100%;
   max-width: 400px;
   padding: 2.5rem;
-  background-color: #1e293b;
+  background-color: var(--bg-card);
   border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-  border: 1px solid #334155;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--border-color);
 }
 
 .title {
@@ -24,12 +24,12 @@
   font-weight: 700;
   margin-bottom: 0.5rem;
   text-align: center;
-  color: #f8fafc;
+  color: var(--text-primary);
 }
 
 .subtitle {
   font-size: 0.875rem;
-  color: #94a3b8;
+  color: var(--text-secondary);
   margin-bottom: 2rem;
   text-align: center;
 }
@@ -47,9 +47,9 @@
   gap: 0.75rem;
   width: 100%;
   padding: 0.875rem;
-  background-color: #0f172a;
-  color: #f8fafc;
-  border: 1px solid #475569;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  border: 1px solid var(--border-active);
   border-radius: 8px;
   font-size: 0.95rem;
   font-weight: 500;
@@ -58,8 +58,8 @@
 }
 
 .socialButton:hover {
-  background-color: #1e293b;
-  border-color: #94a3b8;
+  background-color: var(--bg-hover);
+  border-color: var(--text-secondary);
 }
 
 @media (max-width: 768px) {

@@ -71,7 +71,7 @@ export default function VideoUploader() {
             // Server Action을 통해 R2 업로드용 Presigned URL 발급받기 (및 9GB 한도 검사)
             // 모바일에서 확장자나 타입이 없는 경우 기본적으로 비디오 포맷으로 간주
             const resolvedType = file.type || 'video/mp4';
-            const urlRes = await createUploadUrl(fileName, resolvedType);
+            const urlRes = await createUploadUrl(fileName, resolvedType, file.size);
 
             if (urlRes.error || !urlRes.data) {
                 throw new Error(urlRes.error || '업로드 세션 생성 실패');

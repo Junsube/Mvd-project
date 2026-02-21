@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import styles from './layout.module.css';
 import { LogOut, Home, Video, Users, Settings } from 'lucide-react';
 import { revalidatePath } from 'next/cache';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default async function DashboardLayout({
     children,
@@ -28,7 +29,10 @@ export default async function DashboardLayout({
     return (
         <div className={styles.container}>
             <aside className={styles.sidebar}>
-                <div className={styles.brand}>MVD Workspace</div>
+                <div className={styles.brand} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span>EDP</span>
+                    <ThemeToggle />
+                </div>
                 <nav className={styles.nav}>
                     <Link href="/dashboard" className={`${styles.navItem} ${styles.navItemActive}`}>
                         <Home size={20} />대시보드 홈

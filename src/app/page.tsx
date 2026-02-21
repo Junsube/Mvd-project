@@ -1,14 +1,15 @@
 import Link from 'next/link';
 import styles from './page.module.css';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default function Home() {
   return (
     <div className={styles.main}>
-      <header className={styles.header}>
+      <header className={styles.header} style={{ justifyContent: 'space-between' }}>
         <Link href="/" className={styles.logo}>
           EDP
         </Link>
-        {/* 우측 상단 메뉴(소개, 요금, 로그인) 전체 삭제 */}
+        <ThemeToggle />
       </header>
 
       <main className={styles.hero}>

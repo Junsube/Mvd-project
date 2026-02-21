@@ -2,8 +2,8 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #0f172a;
-  color: #f8fafc;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
   font-family: 'Inter', system-ui, sans-serif;
 }
 
@@ -12,7 +12,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  border-bottom: 1px solid #1e293b;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .logo {
@@ -31,7 +31,7 @@
   justify-content: center;
   text-align: center;
   padding: 4rem 2rem;
-  background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+  background: var(--bg-main);
 }
 
 .title {
@@ -48,7 +48,7 @@
 .ctaBtn {
   display: inline-block;
   padding: 1rem 3rem;
-  background-color: #3b82f6;
+  background-color: var(--btn-primary);
   color: white;
   text-decoration: none;
   border-radius: 8px;
@@ -60,7 +60,7 @@
 
 .ctaBtn:hover {
   transform: translateY(-2px);
-  background-color: #2563eb;
+  background-color: var(--btn-primary-hover);
 }
 
 /* 모바일 반응형 */

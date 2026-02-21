@@ -19,8 +19,9 @@ export default function VideoUploader() {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             const selectedFile = e.target.files[0];
-            // Validate file type
-            if (!selectedFile.type.startsWith('video/')) {
+            // Validate file type (모바일 환경에서 file.type이 빈 문자열일 수 있으므로 확장자 검사 병행)
+            const isValidVideo = selectedFile.type.startsWith('video/') || selectedFile.name.match(/\.(mp4|mov|m4v|avi|mkv|webm)$/i);
+            if (!isValidVideo) {
                 setErrorMsg('비디오 파일만 업로드할 수 있습니다.');
                 setFile(null);
                 return;
@@ -68,7 +69,9 @@ export default function VideoUploader() {
             }
 
             // Server Action을 통해 R2 업로드용 Presigned URL 발급받기 (및 9GB 한도 검사)
-            const urlRes = await createUploadUrl(fileName, file.type);
+            // 모바일에서 확장자나 타입이 없는 경우 기본적으로 비디오 포맷으로 간주
+            const resolvedType = file.type || 'video/mp4';
+            const urlRes = await createUploadUrl(fileName, resolvedType);
 
             if (urlRes.error || !urlRes.data) {
                 throw new Error(urlRes.error || '업로드 세션 생성 실패');
@@ -82,7 +85,7 @@ export default function VideoUploader() {
             await new Promise((resolve, reject) => {
                 const xhr = new XMLHttpRequest();
                 xhr.open('PUT', fullUrl, true);
-                xhr.setRequestHeader('Content-Type', file.type);
+                xhr.setRequestHeader('Content-Type', resolvedType);
 
                 xhr.upload.onprogress = (event) => {
                     if (event.lengthComputable) {
@@ -115,7 +118,7 @@ export default function VideoUploader() {
                 description,
                 file_path: filePath,
                 file_size: file.size,
-                content_type: file.type,
+                content_type: resolvedType,
             });
 
             if (metadataRes.error) {

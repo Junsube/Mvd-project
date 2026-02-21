@@ -97,3 +97,57 @@
     flex: 1;
     overflow-y: auto;
 }
+
+/* 모바일 반응형 디자인 */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #334155;
+    }
+
+    .brand {
+        padding: 1rem;
+        text-align: center;
+        border-bottom: none;
+    }
+
+    .nav {
+        flex-direction: row;
+        padding: 0.5rem;
+        overflow-x: auto;
+        gap: 0.5rem;
+    }
+
+    .navItem {
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        white-space: nowrap;
+    }
+
+    .navItemActive {
+        border-left: none;
+        border-bottom: 3px solid #3b82f6;
+    }
+
+    .logoutBtn {
+        margin-top: 0;
+        border-top: none;
+        padding: 0.5rem 1rem;
+        border-left: 1px solid #334155;
+        border-radius: 6px;
+    }
+
+    .header {
+        display: none;
+        /* 모바일에서는 빈 헤더 제거 */
+    }
+
+    .content {
+        padding: 1rem;
+    }
+}

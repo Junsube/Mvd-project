@@ -10,7 +10,7 @@
 .header {
   padding: 1.5rem 2rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   border-bottom: 1px solid #1e293b;
 }
@@ -21,37 +21,6 @@
   color: #38bdf8;
   text-decoration: none;
   letter-spacing: -0.05em;
-}
-
-.nav {
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-}
-
-.navLink {
-  color: #94a3b8;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s;
-}
-
-.navLink:hover {
-  color: #f8fafc;
-}
-
-.loginBtn {
-  padding: 0.6rem 1.2rem;
-  background-color: #3b82f6;
-  color: white;
-  text-decoration: none;
-  border-radius: 6px;
-  font-weight: 600;
-  transition: background-color 0.2s;
-}
-
-.loginBtn:hover {
-  background-color: #2563eb;
 }
 
 .hero {
@@ -66,32 +35,24 @@
 }
 
 .title {
-  font-size: 4rem;
+  font-size: 4.5rem;
   font-weight: 800;
   line-height: 1.1;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   background: linear-gradient(to right, #38bdf8, #818cf8);
   -webkit-background-clip: text;
   color: transparent;
   max-width: 800px;
 }
 
-.description {
-  font-size: 1.25rem;
-  color: #94a3b8;
-  max-width: 600px;
-  margin-bottom: 3rem;
-  line-height: 1.6;
-}
-
 .ctaBtn {
   display: inline-block;
-  padding: 1rem 2.5rem;
+  padding: 1rem 3rem;
   background-color: #3b82f6;
   color: white;
   text-decoration: none;
   border-radius: 8px;
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   font-weight: 700;
   transition: transform 0.2s, background-color 0.2s;
   box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39);
@@ -102,40 +63,25 @@
   background-color: #2563eb;
 }
 
-.features {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  padding: 5rem 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+  .header {
+    padding: 1rem 1.5rem;
+  }
 
-.card {
-  background-color: #1e293b;
-  padding: 2rem;
-  border-radius: 12px;
-  border: 1px solid #334155;
-  transition: transform 0.2s;
-}
+  .hero {
+    padding: 3rem 1.5rem;
+  }
 
-.card:hover {
-  transform: translateY(-5px);
-}
+  .title {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+  }
 
-.cardIcon {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.cardTitle {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  color: #f8fafc;
-}
-
-.cardDesc {
-  color: #94a3b8;
-  line-height: 1.5;
+  .ctaBtn {
+    padding: 1rem 2.5rem;
+    font-size: 1.125rem;
+    width: 100%;
+    max-width: 300px;
+  }
 }

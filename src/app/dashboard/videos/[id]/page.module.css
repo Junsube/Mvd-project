@@ -57,3 +57,16 @@
 .backBtn:hover {
     background: #2563eb;
 }
+
+/* 모바일 반응형 디자인 */
+@media (max-width: 768px) {
+    .container {
+        padding: 16px;
+    }
+
+    .errorCard {
+        padding: 24px;
+        margin: 40px auto;
+        max-width: 90%;
+    }
+}

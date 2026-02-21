@@ -312,3 +312,36 @@
     border: 1px dashed rgba(255, 255, 255, 0.1);
     border-radius: 8px;
 }
+
+/* 모바일 반응형 디자인 */
+@media (max-width: 768px) {
+    .container {
+        gap: 16px;
+    }
+
+    .videoInfo,
+    .commentSection {
+        padding: 16px;
+    }
+
+    .title {
+        font-size: 1.25rem;
+    }
+
+    .description {
+        padding: 12px;
+        font-size: 0.85rem;
+    }
+
+    .commentHeader {
+        font-size: 1rem;
+    }
+
+    .textarea {
+        padding: 10px;
+    }
+
+    .commentItem {
+        padding: 12px;
+    }
+}

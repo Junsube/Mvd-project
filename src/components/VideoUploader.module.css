@@ -209,3 +209,18 @@
         transform: translateY(0);
     }
 }
+
+/* 모바일 반응형 디자인 */
+@media (max-width: 768px) {
+    .uploaderCard {
+        padding: 1rem;
+    }
+
+    .dropZone {
+        padding: 1.5rem 1rem;
+    }
+
+    .dropText {
+        font-size: 0.85rem;
+    }
+}

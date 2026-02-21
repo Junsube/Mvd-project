@@ -7,7 +7,10 @@ export async function GET(request: Request) {
     const next = searchParams.get('next') ?? '/dashboard';
 
     // Vercel 등 배포 환경에서 origin이 localhost로 찍히는 현상(포워딩/프록시 이슈) 방어
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || new URL(request.url).origin;
+    // 환경변수에 localhost가 적혀있어도 실제 기기에서 접속한 도메인을 따라가도록 동적 처리
+    const host = request.headers.get('host');
+    const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+    const siteUrl = `${protocol}://${host}`;
 
     if (code) {
         const supabase = await createClient();

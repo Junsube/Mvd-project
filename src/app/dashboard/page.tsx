@@ -47,7 +47,8 @@ export default async function Dashboard() {
                                     <div className={styles.videoInfo}>
                                         <h3 className={styles.videoTitle}>{video.title}</h3>
                                         <p className={styles.videoDate}>
-                                            {new Date(video.created_at).toLocaleDateString()} • {(video.file_size / (1024 * 1024)).toFixed(1)} MB
+                                            {new Date(video.created_at).toLocaleDateString()}
+                                            {video.file_size > 0 && ` • ${(video.file_size / (1024 * 1024)).toFixed(1)} MB`}
                                         </p>
                                     </div>
                                     <div className={styles.actionsGroup}>

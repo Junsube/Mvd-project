@@ -32,7 +32,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; connect-src 'self' https://*.supabase.co https://*.r2.cloudflarestorage.com https://*.cloudflare.com; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' https://*.supabase.co https://*.r2.cloudflarestorage.com blob: data:; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';"
+            value: "default-src 'self'; connect-src 'self' https://*.supabase.co https://*.r2.cloudflarestorage.com https://*.cloudflare.com; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.youtube.com https://s.ytimg.com; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https://*.ytimg.com; media-src 'self' https://*.supabase.co https://*.r2.cloudflarestorage.com blob: data:; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; frame-src 'self' https://www.youtube.com;"
           }
         ]
       }

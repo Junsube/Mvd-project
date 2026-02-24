@@ -84,30 +84,7 @@ export async function getVideoDetailsForGuest(videoId: string) {
         return { error: '이 영상은 로그인한 사용자만 시청할 수 있도록 제한되어 있습니다.' };
     }
 
-    // 3. Generate Signed URL from R2
-    const bucketName = process.env.R2_BUCKET_NAME;
-    if (!bucketName) {
-        return { error: 'R2 환경 변수가 설정되지 않았습니다.' };
-    }
-
-    let signedUrl = '';
-    try {
-        const { GetObjectCommand } = await import('@aws-sdk/client-s3');
-        const { getSignedUrl } = await import('@aws-sdk/s3-request-presigner');
-        const { r2Client } = await import('@/utils/r2/server');
-
-        const command = new GetObjectCommand({
-            Bucket: bucketName,
-            Key: video.file_path,
-        });
-
-        signedUrl = await getSignedUrl(r2Client, command, { expiresIn: 3600 });
-    } catch (err: any) {
-        console.error('R2 Guest URL 오류:', err);
-        return { error: '영상 스트리밍 주소를 가져오지 못했습니다.' };
-    }
-
-    // 4. Fetch comments (publicly visible if video is visible)
+    // 3. Fetch comments (publicly visible if video is visible)
     const { data: comments, error: commentsError } = await supabase
         .from('comments')
         .select('*')
@@ -117,7 +94,7 @@ export async function getVideoDetailsForGuest(videoId: string) {
     return {
         data: {
             video,
-            signedUrl,
+            youtubeId: video.file_path,
             comments: commentsError ? [] : comments,
             isOwner,
         }

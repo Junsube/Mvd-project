@@ -18,6 +18,7 @@ export const metadata: Metadata = {
 };
 
 import { ThemeProvider } from "@/components/ThemeProvider";
+import InAppBrowserGuard from "@/components/InAppBrowserGuard";
 
 export default function RootLayout({
   children,
@@ -28,7 +29,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ThemeProvider attribute="data-theme" defaultTheme="dark" enableSystem={false}>
-          {children}
+          <InAppBrowserGuard>
+            {children}
+          </InAppBrowserGuard>
         </ThemeProvider>
       </body>
     </html>

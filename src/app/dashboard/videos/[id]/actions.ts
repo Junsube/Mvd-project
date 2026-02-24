@@ -62,29 +62,6 @@ export async function getVideoDetails(videoId: string) {
         return { error: '비디오를 찾을 수 없습니다.' };
     }
 
-    const bucketName = process.env.R2_BUCKET_NAME;
-    if (!bucketName) {
-        return { error: '서버 환경 변수(R2_BUCKET_NAME)가 설정되지 않았습니다.' };
-    }
-
-    let signedUrl = '';
-    try {
-        const { GetObjectCommand } = await import('@aws-sdk/client-s3');
-        const { getSignedUrl } = await import('@aws-sdk/s3-request-presigner');
-        const { r2Client } = await import('@/utils/r2/server');
-
-        const command = new GetObjectCommand({
-            Bucket: bucketName,
-            Key: video.file_path,
-        });
-
-        // 발급받는 스트리밍 임시 URL (1시간 유효)
-        signedUrl = await getSignedUrl(r2Client, command, { expiresIn: 3600 });
-    } catch (err: any) {
-        console.error('R2 스트리밍 URL 생성 에러:', err);
-        return { error: '비디오 스트리밍 주소를 가져오지 못했습니다.' };
-    }
-
     const { data: comments, error: commentsError } = await supabase
         .from('comments')
         .select('*')
@@ -94,7 +71,7 @@ export async function getVideoDetails(videoId: string) {
     return {
         data: {
             video,
-            signedUrl,
+            youtubeId: video.file_path,
             comments: commentsError ? [] : comments,
         }
     };

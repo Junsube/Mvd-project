@@ -6,9 +6,7 @@ import { revalidatePath } from 'next/cache';
 export async function addVideoMetadata(data: {
     title: string;
     description: string;
-    file_path: string;
-    file_size: number;
-    content_type: string;
+    youtube_id: string;
 }) {
     const supabase = await createClient();
 
@@ -23,9 +21,9 @@ export async function addVideoMetadata(data: {
             user_id: userAuth.user.id,
             title: data.title,
             description: data.description,
-            file_path: data.file_path,
-            file_size: data.file_size,
-            content_type: data.content_type,
+            file_path: data.youtube_id, // 유튜브 ID를 file_path 컬럼에 저장
+            file_size: 0,
+            content_type: 'youtube/video',
         },
     ]);
 
@@ -38,65 +36,6 @@ export async function addVideoMetadata(data: {
     return { success: true };
 }
 
-export async function createUploadUrl(fileName: string, fileType: string, fileSize: number) {
-    const supabase = await createClient();
-
-    const { data: userAuth, error: authError } = await supabase.auth.getUser();
-
-    if (authError || !userAuth.user) {
-        return { error: '세션 정보가 없습니다. 다시 로그인해주세요.' };
-    }
-
-    // --- [NEW] 안전 및 과금 방어 로직 (Validation & Rate Limit/Capacity) ---
-    // 1. 단일 파일 업로드 최대 크기 하드 제어 (1GB)
-    const MAX_FILE_SIZE = 1 * 1024 * 1024 * 1024;
-    if (fileSize > MAX_FILE_SIZE) {
-        return { error: '보안 정책에 따라 1GB를 초과하는 파일은 업로드할 수 없습니다.' };
-    }
-
-    const { data: allVideos, error: sizeError } = await supabase
-        .from('videos')
-        .select('file_size');
-
-    if (sizeError) {
-        return { error: '용량 검증 중 오류가 발생했습니다.' };
-    }
-
-    const totalBytes = allVideos.reduce((acc, v) => acc + (Number(v.file_size) || 0), 0);
-    const LIMIT_9GB = 9 * 1024 * 1024 * 1024;
-
-    // 2. 전체 계정 스토리지 과도 사용량 방어 (R2 Free Tier 과금 방지)
-    if (totalBytes + fileSize > LIMIT_9GB) {
-        return { error: '❌ 무료 저장 공간(9GB) 제한에 도달할 예정입니다. 새 영상을 올리려면 기존 영상을 지워주세요.' };
-    }
-    // ----------------------------------------
-
-    const filePath = `${userAuth.user.id}/${fileName}`;
-    const bucketName = process.env.R2_BUCKET_NAME;
-
-    if (!bucketName) {
-        return { error: '서버 환경 변수(R2_BUCKET_NAME)가 설정되지 않았습니다.' };
-    }
-
-    try {
-        const { PutObjectCommand } = await import('@aws-sdk/client-s3');
-        const { getSignedUrl } = await import('@aws-sdk/s3-request-presigner');
-        const { r2Client } = await import('@/utils/r2/server');
-
-        const command = new PutObjectCommand({
-            Bucket: bucketName,
-            Key: filePath,
-            ContentType: fileType,
-        });
-
-        const fullUrl = await getSignedUrl(r2Client, command, { expiresIn: 3600 });
-
-        return { data: { filePath, fullUrl } };
-    } catch (err: any) {
-        console.error('R2 URL 생성 에러:', err);
-        return { error: '파일 업로드 준비 중 오류가 발생했습니다.' };
-    }
-}
 
 export async function deleteVideo(videoId: string) {
     const supabase = await createClient();
@@ -106,10 +45,10 @@ export async function deleteVideo(videoId: string) {
         return { error: '로그인이 필요합니다.' };
     }
 
-    // 1. 소유권 검증 및 파일 경로 확보
+    // 1. 소유권 검증
     const { data: video, error: fetchError } = await supabase
         .from('videos')
-        .select('file_path, user_id')
+        .select('user_id')
         .eq('id', videoId)
         .single();
 
@@ -121,26 +60,7 @@ export async function deleteVideo(videoId: string) {
         return { error: '해당 비디오를 삭제할 권한(소유권)이 없습니다.' };
     }
 
-    // 2. Cloudflare R2에서 원본 파일 완전 삭제 (용량 회수)
-    const bucketName = process.env.R2_BUCKET_NAME;
-    if (!bucketName) {
-        return { error: '서버 환경 변수(R2_BUCKET_NAME)가 설정되지 않았습니다.' };
-    }
-
-    try {
-        const { DeleteObjectCommand } = await import('@aws-sdk/client-s3');
-        const { r2Client } = await import('@/utils/r2/server');
-
-        const command = new DeleteObjectCommand({
-            Bucket: bucketName,
-            Key: video.file_path,
-        });
-
-        await r2Client.send(command);
-    } catch (err: any) {
-        console.error('R2 파일 삭제 에러:', err);
-        return { error: '외부 스토리지에서 영상 파일을 지우는 중 오류가 발생했습니다.' };
-    }
+    // 유튜브 모드이므로 외부 스토리지(R2) 파일 삭제 과정 불필요
 
     // 3. Supabase 데이터베이스 영상 정보 삭제
     const { error: dbError } = await supabase

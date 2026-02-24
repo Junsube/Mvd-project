@@ -6,9 +6,11 @@ import { addGuestComment } from '@/app/watch/[id]/actions';
 import styles from './VideoPlayerWithComments.module.css';
 import { PlayCircle, MessageSquare } from 'lucide-react';
 
+import YouTube, { YouTubeProps } from 'react-youtube';
+
 interface VideoPlayerProps {
     video: any;
-    signedUrl: string;
+    youtubeId: string;
     comments: any[];
     isGuest?: boolean;
 }
@@ -21,23 +23,33 @@ function formatTime(seconds: number) {
 
 export default function VideoPlayerWithComments({
     video,
-    signedUrl,
+    youtubeId,
     comments,
     isGuest = false
 }: VideoPlayerProps) {
-    const videoRef = useRef<HTMLVideoElement>(null);
+    const playerRef = useRef<any>(null);
     const [pausedTime, setPausedTime] = useState<number | null>(null);
     const [state, formAction, isPending] = useActionState(isGuest ? addGuestComment : addComment, null);
     const formRef = useRef<HTMLFormElement>(null);
 
-    const handlePause = () => {
-        if (videoRef.current) {
-            setPausedTime(videoRef.current.currentTime);
+    const onReady: YouTubeProps['onReady'] = (event) => {
+        playerRef.current = event.target;
+    };
+
+    const onStateChange: YouTubeProps['onStateChange'] = (event) => {
+        // PlayerState.PAUSED = 2
+        if (event.data === 2 && playerRef.current) {
+            setPausedTime(playerRef.current.getCurrentTime());
+        } else if (event.data === 1) { // PlayerState.PLAYING = 1
+            setPausedTime(null);
         }
     };
 
-    const handlePlay = () => {
-        setPausedTime(null);
+    const handleSeekTo = (time: number) => {
+        if (playerRef.current) {
+            playerRef.current.seekTo(time);
+            playerRef.current.playVideo();
+        }
     };
 
     useEffect(() => {
@@ -50,21 +62,28 @@ export default function VideoPlayerWithComments({
     return (
         <div className={styles.container}>
             <div className={styles.videoSection}>
-                <div className={styles.playerWrapper}>
-                    <video
-                        ref={videoRef}
-                        src={signedUrl}
-                        className={styles.player}
-                        controls
-                        controlsList="nodownload"
-                        onPause={handlePause}
-                        onPlay={handlePlay}
+                <div className={styles.playerWrapper} style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
+                    <YouTube
+                        videoId={youtubeId}
+                        onReady={onReady}
+                        onStateChange={onStateChange}
+                        opts={{
+                            width: '100%',
+                            height: '100%',
+                            playerVars: {
+                                rel: 0,
+                                modestbranding: 1
+                            }
+                        }}
+                        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                        iframeClassName={styles.player}
                     />
                 </div>
                 <div className={styles.videoInfo}>
                     <h1 className={styles.title}>{video.title}</h1>
                     <p className={styles.meta}>
-                        {(video.file_size / (1024 * 1024)).toFixed(2)} MB • {new Date(video.created_at).toLocaleDateString()}
+                        {video.file_size > 0 && `${(video.file_size / (1024 * 1024)).toFixed(2)} MB • `}
+                        {new Date(video.created_at).toLocaleDateString()}
                     </p>
                     {video.description && <p className={styles.description}>{video.description}</p>}
                 </div>
@@ -134,12 +153,7 @@ export default function VideoPlayerWithComments({
                                     {comment.timestamp_sec !== null && (
                                         <button
                                             className={styles.timeLink}
-                                            onClick={() => {
-                                                if (videoRef.current) {
-                                                    videoRef.current.currentTime = comment.timestamp_sec;
-                                                    videoRef.current.play();
-                                                }
-                                            }}
+                                            onClick={() => handleSeekTo(comment.timestamp_sec)}
                                             title="해당 시간으로 이동하여 재생"
                                         >
                                             <PlayCircle size={14} className={styles.playIcon} />

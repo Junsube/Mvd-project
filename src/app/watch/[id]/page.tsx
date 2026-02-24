@@ -29,7 +29,7 @@ export default async function WatchPage({ params }: { params: Promise<{ id: stri
 
             <VideoPlayerWithComments
                 video={data.video}
-                signedUrl={data.signedUrl}
+                youtubeId={data.youtubeId}
                 comments={data.comments}
                 isGuest={!data.isOwner}
             />

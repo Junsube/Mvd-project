@@ -33,7 +33,7 @@ export default async function VideoDetailPage({ params }: { params: Promise<{ id
 
             <VideoPlayerWithComments
                 video={data.video}
-                signedUrl={data.signedUrl}
+                youtubeId={data.youtubeId}
                 comments={data.comments}
             />
         </div>

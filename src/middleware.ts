@@ -2,6 +2,9 @@ import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
+    if (process.env.NODE_ENV === 'development') {
+        console.log("[Middleware] Incoming Request:", request.nextUrl.pathname);
+    }
     let supabaseResponse = NextResponse.next({
         request,
     });
@@ -27,22 +30,25 @@ export async function middleware(request: NextRequest) {
         }
     );
 
-    // refreshing the auth token, must await getUser
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
-
     const isAuthRoute = request.nextUrl.pathname.startsWith('/login');
     const isProtectedRoute = request.nextUrl.pathname.startsWith('/dashboard');
 
-    if (isProtectedRoute && !user) {
-        // AuthZ failure: Redirect non-authenticated users trying to access dashboard
-        return NextResponse.redirect(new URL('/login', request.url));
-    }
+    // 보안 검사(리다이렉트)가 필요한 경로일 때만 무거운 getUser API를 호출하도록 최적화합니다.
+    if (isAuthRoute || isProtectedRoute) {
+        // 프리패치(Prefetch) 요청인 경우 가벼운 getSession으로 우회할 수도 있으나, 완벽한 보안을 위해 getUser를 유지하되 범위를 축소합니다.
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
 
-    if (isAuthRoute && user) {
-        // Redirect authenticated users away from the login page to the dashboard
-        return NextResponse.redirect(new URL('/dashboard', request.url));
+        if (isProtectedRoute && !user) {
+            // AuthZ failure: Redirect non-authenticated users trying to access dashboard
+            return NextResponse.redirect(new URL('/login', request.url));
+        }
+
+        if (isAuthRoute && user) {
+            // Redirect authenticated users away from the login page to the dashboard
+            return NextResponse.redirect(new URL('/dashboard', request.url));
+        }
     }
 
     // Set tight CORS restrictions to mitigate CSRF to allowed origins

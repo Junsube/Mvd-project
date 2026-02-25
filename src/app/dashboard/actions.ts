@@ -2,6 +2,7 @@
 
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { videoUploadSchema } from '@/utils/validation';
 
 export async function addVideoMetadata(data: {
     title: string;
@@ -9,6 +10,11 @@ export async function addVideoMetadata(data: {
     youtube_id: string;
 }) {
     const supabase = await createClient();
+
+    const validation = videoUploadSchema.safeParse(data);
+    if (!validation.success) {
+        return { error: validation.error.issues[0].message };
+    }
 
     const { data: userAuth, error: authError } = await supabase.auth.getUser();
 

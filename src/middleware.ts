@@ -2,12 +2,14 @@ import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
-    if (process.env.NODE_ENV === 'development') {
-        console.log("[Middleware] Incoming Request:", request.nextUrl.pathname);
-    }
     let supabaseResponse = NextResponse.next({
         request,
     });
+
+    // 자동 로그인 옵션 체크
+    const cookieStore = request.cookies;
+    const isAutoLoginStr = cookieStore.get('is_auto_login')?.value;
+    const isAutoLogin = isAutoLoginStr !== 'false';
 
     const supabase = createServerClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -22,9 +24,14 @@ export async function middleware(request: NextRequest) {
                     supabaseResponse = NextResponse.next({
                         request,
                     });
-                    cookiesToSet.forEach(({ name, value, options }) =>
-                        supabaseResponse.cookies.set(name, value, options)
-                    );
+                    cookiesToSet.forEach(({ name, value, options }) => {
+                        const finalOptions = { ...options };
+                        if (!isAutoLogin && (name.startsWith('sb-') || name.includes('-auth-token'))) {
+                            delete finalOptions.maxAge;
+                            delete finalOptions.expires;
+                        }
+                        supabaseResponse.cookies.set(name, value, finalOptions);
+                    });
                 },
             },
         }
